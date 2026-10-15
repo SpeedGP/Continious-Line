@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="170mm" height="60mm" viewBox="0 0 170 60">
+  <g id="text-paths" aria-label="HOLA8">
+    <path id="glyph0" style="fill:#000000;stroke:none" d="M 10,10 L 17,10 L 17,26 L 29,26 L 29,10 L 36,10 L 36,50 L 29,50 L 29,33 L 17,33 L 17,50 L 10,50 Z"/>
+    <path id="glyph1" style="fill:#000000;stroke:none" d="M 70,30 C 70,41.046 63.7322,50 56,50 C 48.2678,50 42,41.046 42,30 C 42,18.954 48.2678,10 56,10 C 63.7322,10 70,18.954 70,30 Z M 63,30 C 63,22.8201 59.8661,17 56,17 C 52.1339,17 49,22.8201 49,30 C 49,37.1799 52.1339,43 56,43 C 59.8661,43 63,37.1799 63,30 Z"/>
+    <path id="glyph2" style="fill:#000000;stroke:none" d="M 78,10 v 40 h 24 v -7 h -17 v -33 z"/>
+    <path id="glyph3" style="fill:#000000;stroke:none" d="M 108,50 L 119,10 L 127,10 L 138,50 L 131,50 L 128,40 L 118,40 L 115,50 Z M 120,34 L 123,22 L 126,34 Z"/>
+    <path id="glyph4" style="fill:#000000;stroke:none" d="M 144,10 h 22 v 22 h -22 z M 151,17 h 8 v 8 h -8 z M 144,30 h 22 v 20 h -22 z M 151,37 h 8 v 6 h -8 z"/>
+  </g>
+</svg>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+  <name>Continuous Line</name>
+  <id>com.wavemark.continuous_line</id>
+
+  <param name="tab" type="notebook">
+    <page name="options" gui-text="Options">
+      <param name="flatten_tol" type="float" precision="3" min="0.001" max="10"
+             gui-text="Curve flatten tolerance (mm)"
+             gui-description="Maximum distance between a curve and the straight segments that replace it.">0.1</param>
+      <param name="snap_tol" type="float" precision="3" min="0" max="50"
+             gui-text="Merge / snap tolerance (mm)"
+             gui-description="Vertices closer than this are joined into one node so touching contours connect without a bridge.">0.1</param>
+      <param name="start_corner" type="optiongroup" appearance="combo"
+             gui-text="Start corner"
+             gui-description="The line starts at the vertex closest to this corner of the drawing's bounding box (bottom-left = GRBL home on most machines).">
+        <option value="bottom-left">Bottom-left</option>
+        <option value="top-left">Top-left</option>
+        <option value="top-right">Top-right</option>
+        <option value="bottom-right">Bottom-right</option>
+      </param>
+      <param name="min_island" type="float" precision="2" min="0" max="1000"
+             gui-text="Minimum island size (mm)"
+             gui-description="Closed contours whose bounding box is smaller than this in both directions are dropped (trace noise). 0 = keep everything.">0</param>
+      <param name="bridge_style" type="optiongroup" appearance="combo"
+             gui-text="Bridge style"
+             gui-description="How disconnected shapes are joined. 'Straight line' is currently the only option.">
+        <option value="straight">Straight line</option>
+      </param>
+      <param name="allow_open" type="bool"
+             gui-text="Allow open path (end anywhere)"
+             gui-description="Produce an Eulerian path instead of a closed circuit: saves one retrace but the line ends somewhere other than the start corner.">false</param>
+      <param name="keep_original" type="bool"
+             gui-text="Keep original (hidden in layer 'Original')"
+             gui-description="Move the source objects to a hidden layer instead of deleting them.">false</param>
+      <param name="stroke_width" type="float" precision="2" min="0.01" max="10"
+             gui-text="Output stroke width (mm)">0.3</param>
+    </page>
+    <page name="help" gui-text="Help">
+      <label appearance="header">Continuous Line</label>
+      <label>Replaces the selection (or the whole drawing if nothing is selected) with ONE path made of a single subpath, so that a pen plotter without pen-lift can draw everything in one go. Gaps between shapes are bridged with the shortest possible straight lines and the few lines that must be drawn twice are chosen to minimise the total extra length.</label>
+      <label>Convert text to paths and unlink clones before running. Run this extension first, then the J Tech Photonics Laser Tool (or any G-code generator).</label>
+      <label>A report with the number of bridges, retraced length and the overhead percentage is shown when the extension finishes.</label>
+    </page>
+  </param>
+
+  <effect needs-live-preview="false">
+    <object-type>all</object-type>
+    <effects-menu>
+      <submenu name="Generate from Path"/>
+    </effects-menu>
+  </effect>
+
+  <script>
+    <command location="inx" interpreter="python">continuous_line.py</command>
+  </script>
+</inkscape-extension>
