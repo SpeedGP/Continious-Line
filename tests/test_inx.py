@@ -60,7 +60,30 @@ def test_inx_params_match_add_arguments():
         assert corner in [o.get("value") for o in root.iter(NS + "option")]
 
 
+def test_squiggle_inx():
+    root = ET.parse(os.path.join(ROOT, "squiggle_raster.inx")).getroot()
+    assert root.tag == NS + "inkscape-extension"
+    assert root.find(NS + "effect/" + NS + "effects-menu/" + NS + "submenu").get("name") == "Generate from Path"
+    cmd = root.find(NS + "script/" + NS + "command")
+    assert cmd.get("location") == "inx" and cmd.get("interpreter") == "python"
+    assert cmd.text.strip() == "squiggle_raster.py"
+    src = open(os.path.join(ROOT, "squiggle_raster.py"), encoding="utf-8").read()
+    names = set()
+    for p in _params(root):
+        assert p.get("type") in VALID_TYPES, p.get("name")
+        names.add(p.get("name"))
+        assert ('"--%s"' % p.get("name")) in src, "missing add_argument for %s" % p.get("name")
+        if p.get("type") in ("int", "float"):
+            float(p.text)
+            assert float(p.get("min")) <= float(p.text) <= float(p.get("max")), p.get("name")
+    assert {"rows", "amp_max", "freq_max", "gamma", "direction", "tolerance", "keep_image"} <= names
+    # the two extensions must not share an id
+    other = ET.parse(os.path.join(ROOT, "continuous_line.inx")).getroot()
+    assert root.find(NS + "id").text != other.find(NS + "id").text
+
+
 if __name__ == "__main__":
     test_inx_structure()
     test_inx_params_match_add_arguments()
+    test_squiggle_inx()
     print("PASS inx")

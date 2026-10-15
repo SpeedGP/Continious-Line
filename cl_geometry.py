@@ -417,6 +417,25 @@ def corner_point(bbox, corner):
     return (x, y)
 
 
+def points_to_d(points, precision=3):
+    """SVG path data with exactly ONE subpath: absolute M, then L pairs, no Z."""
+    if not points:
+        return ""
+    fmt = "%%.%df" % precision
+
+    def num(v):
+        s = fmt % v
+        if "." in s:
+            s = s.rstrip("0").rstrip(".")
+        return "0" if s in ("-0", "") else s
+
+    parts = ["M", num(points[0][0]), num(points[0][1]), "L"]
+    for x, y in points[1:]:
+        parts.append(num(x))
+        parts.append(num(y))
+    return " ".join(parts)
+
+
 def polyline_length(points):
     total = 0.0
     for i in range(1, len(points)):

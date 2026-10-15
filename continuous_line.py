@@ -25,7 +25,7 @@ import inkex  # noqa: E402
 from inkex import PathElement, Transform  # noqa: E402
 from lxml import etree  # noqa: E402  (ships with Inkscape's Python)
 
-from cl_geometry import flatten_cubic, user_units_per_mm  # noqa: E402
+from cl_geometry import flatten_cubic, points_to_d, user_units_per_mm  # noqa: E402
 from cl_pipeline import format_report, run_pipeline  # noqa: E402
 
 SHAPE_TAGS = ("path", "rect", "circle", "ellipse", "line", "polyline", "polygon")
@@ -354,19 +354,7 @@ class ContinuousLine(inkex.EffectExtension):
     @staticmethod
     def _points_to_d(points, precision=3):
         """Exactly one subpath: absolute M, then L pairs, no Z."""
-        fmt = "%%.%df" % precision
-
-        def num(v):
-            s = fmt % v
-            if "." in s:
-                s = s.rstrip("0").rstrip(".")
-            return "0" if s in ("-0", "") else s
-
-        parts = ["M", num(points[0][0]), num(points[0][1]), "L"]
-        for x, y in points[1:]:
-            parts.append(num(x))
-            parts.append(num(y))
-        return " ".join(parts)
+        return points_to_d(points, precision)
 
 
 if __name__ == "__main__":

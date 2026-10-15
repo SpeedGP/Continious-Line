@@ -135,6 +135,48 @@ bridge/retrace instead. Traced bitmaps never have this problem (contours do
 not cross); for hand-drawn line art you can add nodes at crossings with
 *Path ▸ Division* / *Cut Path* first if it matters.
 
+## Squiggle Raster — plotting photographs
+
+A threshold trace (Trace Bitmap) renders faces as black-and-white blobs
+because skin is all mid-tones. **Extensions ▸ Generate from Path ▸ Squiggle
+Raster (from Image)** takes a different route: select a bitmap and it is
+replaced by *one* path made of horizontal sine-wave rows whose amplitude
+and frequency follow the darkness of the picture, walked back and forth
+across the image. Tone comes from line density, like an engraving, and the
+result is a single continuous line by construction — no bridges, no
+retrace, nothing for Continuous Line to do. Feed it straight to J Tech.
+
+| Option | Default | Meaning |
+|---|---|---|
+| **Rows** | 80 | Number of lines across the image. 60–120 for a portrait; detail and path length both scale with it. |
+| **Line direction** | Horizontal | Rows run across (horizontal) or down (vertical) the image. |
+| **Max amplitude in black** | 90 % | Peak-to-peak wiggle height where the image is black, as a percentage of the row pitch. 90 % almost fills the row; >100 % makes rows overlap. |
+| **Min amplitude in white** | 0 % | 0 keeps white areas as a straight line. |
+| **Max / min frequency** | 2.5 / 0.3 | Waves per row pitch in black / white. Higher max = denser, darker blacks, longer path. |
+| **Tone gamma** | 1.0 | >1 lightens mid-tones (try 1.2–1.5 so faces don't go muddy); <1 darkens. |
+| **Treat as white below** | 4 % | Darkness below this draws as a straight line so paper-white stays clean (hides JPEG noise). |
+| **Invert** | off | For a white pen on black paper. |
+| **Curve tolerance (mm)** | 0.1 | Chord error when sampling the sine. 0.2–0.3 mm is plenty for a pen and halves the point count. |
+| **Feed rate for the time estimate** | 2000 | Only used for the "nominal time" line in the report. |
+| **Keep image** | off | Hide the bitmap instead of deleting it. |
+
+Workflow: import the photo, scale and place it on the page (the path fills
+the image box exactly), *Extensions ▸ Images ▸ Embed Images* so the pixels
+are inside the SVG, select the image, run Squiggle Raster, read the report,
+then J Tech. If the photo is linked rather than embedded the extension
+tries the file path next to the document; embedding avoids any doubt.
+
+The report shows rows, points, path length and a nominal draw time. Expect
+long paths: a 1 m-wide portrait at 90 rows is ~200 m of line (≈ 1.5–2 h at
+F2000), because every wiggle is pen travel. Fewer rows, lower max
+frequency and a gamma above 1 all shorten it. On a GRBL machine with low
+acceleration the wiggles never reach full feed rate, so real time is
+longer than nominal.
+
+Preview without Inkscape: `python squiggle_cli.py photo.jpg out.svg
+--width-mm 1000 --rows 90 --png preview.png` (JPEG input and the PNG
+preview need Pillow; 8-bit PNG input works with the standard library).
+
 ## Command-line use (no Inkscape)
 
 ```

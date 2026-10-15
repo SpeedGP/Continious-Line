@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+  <name>Squiggle Raster (from Image)</name>
+  <id>com.wavemark.squiggle_raster</id>
+
+  <param name="tab" type="notebook">
+    <page name="options" gui-text="Options">
+      <param name="rows" type="int" min="2" max="2000" gui-text="Rows (lines across the image)"
+             gui-description="More rows = finer detail, longer path. 60-120 is typical for a portrait.">80</param>
+      <param name="direction" type="optiongroup" appearance="combo" gui-text="Line direction">
+        <option value="horizontal">Horizontal</option>
+        <option value="vertical">Vertical</option>
+      </param>
+      <param name="amp_max" type="float" precision="0" min="0" max="200" gui-text="Max amplitude in black (% of row pitch)"
+             gui-description="Peak-to-peak wiggle height where the image is black. 90% nearly fills the row; above 100% rows overlap.">90</param>
+      <param name="amp_min" type="float" precision="0" min="0" max="100" gui-text="Min amplitude in white (% of row pitch)"
+             gui-description="0 = white areas become a straight line.">0</param>
+      <param name="freq_max" type="float" precision="2" min="0.05" max="20" gui-text="Max frequency in black (waves per row pitch)">2.5</param>
+      <param name="freq_min" type="float" precision="2" min="0.01" max="20" gui-text="Min frequency in white (waves per row pitch)">0.3</param>
+      <param name="gamma" type="float" precision="2" min="0.2" max="4" gui-text="Tone gamma"
+             gui-description="1 = linear. Above 1 lightens mid-tones (faces), below 1 darkens them.">1.0</param>
+      <param name="white_cutoff" type="float" precision="0" min="0" max="50" gui-text="Treat as white below (% darkness)"
+             gui-description="Darkness below this is drawn as a straight line, so paper-white stays clean.">4</param>
+      <param name="invert" type="bool" gui-text="Invert (for white pen on black paper)">false</param>
+      <param name="tolerance" type="float" precision="3" min="0.005" max="5" gui-text="Curve tolerance (mm)"
+             gui-description="Maximum chord error when sampling the sine waves. 0.1-0.3 mm is plenty for a pen.">0.1</param>
+      <param name="feed" type="float" precision="0" min="1" max="100000" gui-text="Feed rate for the time estimate (mm/min)">2000</param>
+      <param name="keep_image" type="bool" gui-text="Keep image (hidden) instead of deleting it">false</param>
+      <param name="stroke_width" type="float" precision="2" min="0.01" max="10" gui-text="Output stroke width (mm)">0.3</param>
+    </page>
+    <page name="help" gui-text="Help">
+      <label appearance="header">Squiggle Raster</label>
+      <label>Select one bitmap image and Apply. The image is replaced by a single continuous path: rows of sine waves whose amplitude and frequency follow the darkness of the picture, walked back and forth so there is no pen lift and nothing to bridge. Ideal for photographs and faces, which threshold tracing renders badly.</label>
+      <label>Tips: embed the image first (Extensions > Images > Embed Images) so the file is always found; size the image on the page before running (the path fills the image box); try gamma 1.2-1.5 for portraits. Then run the J Tech Photonics Laser Tool as usual.</label>
+    </page>
+  </param>
+
+  <effect needs-live-preview="false">
+    <object-type>all</object-type>
+    <effects-menu>
+      <submenu name="Generate from Path"/>
+    </effects-menu>
+  </effect>
+
+  <script>
+    <command location="inx" interpreter="python">squiggle_raster.py</command>
+  </script>
+</inkscape-extension>

@@ -142,23 +142,7 @@ def collect_polylines(root, flatten_tol):
     return polylines, warnings
 
 
-def points_to_d(points, precision=3):
-    """Single-subpath path data: one absolute M then L commands."""
-    if not points:
-        return ""
-    fmt = "%%.%df" % precision
-
-    def num(v):
-        s = fmt % v
-        if "." in s:
-            s = s.rstrip("0").rstrip(".")
-        return s if s not in ("-0", "") else "0"
-
-    parts = ["M", num(points[0][0]), num(points[0][1]), "L"]
-    for x, y in points[1:]:
-        parts.append(num(x))
-        parts.append(num(y))
-    return " ".join(parts)
+from cl_geometry import points_to_d  # noqa: E402  (re-exported for tests)
 
 
 def write_svg(src_root, points, out_path, stroke_width_uu):
