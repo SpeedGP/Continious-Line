@@ -1,5 +1,9 @@
 # Continuous Line — zero pen-lift path merger for Inkscape 1.4
 
+-------------------
+This is a first for me. This was coded completely with Claude Code, I am a noob with a drawing robot and no pen-lifting mechanism.
+-------------------
+
 Turns everything in your drawing into **one `<path>` with a single subpath**
 (one `M`, then only `L` segments, no `Z`), so a G-code generator that has no
 pen-lift — the J Tech Photonics Laser Tool on a plotter whose pen is always
