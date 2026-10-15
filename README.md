@@ -190,3 +190,7 @@ python tests/test_graph.py
 python tests/test_end_to_end.py
 python tests/test_inx.py
 ```
+
+## License
+
+GPL-3.0 — see [LICENSE](LICENSE).
